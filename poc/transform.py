@@ -1,34 +1,41 @@
 #!/usr/bin/env python3
-import pandas as pd
-import nltk
-from nltk.corpus import stopwords
-from nltk.stem.porter import PorterStemmer
-import string
 
+import sys
+sys.path.append(sys.path[0])
+
+from os import path
+
+import pandas
+import pandas as pd
+from fields import Field
+from aggregation import *
+
+
+DIR = sys.path[0]
 FILENAME = 'Uncleaned_DS_jobs.csv.zip'
 
 
-stemmer = PorterStemmer()
-
-
 def transform():
-    df = pd.read_csv("/tmp/{}".format(FILENAME))
+    df = pd.read_csv(path.join(DIR, FILENAME))
 
-    sws = set(stopwords.words('english'))
+    # normalize job titles
+    normalize_job_titles(df, log=True)
 
-    with open('stopwords.txt') as f:  # more english stop words
-        sws |= set([line.strip() for line in f.readlines() if line.strip()])
 
-    sws |= set(string.punctuation)  # remove punctuations
-    sws |= set(string.digits)  # remove digits
+def normalize_job_titles(df: pandas.DataFrame, log: bool = False):
+    if log:
+        print('Count by {}'.format(Field.JobTitle))
+        print(get_field_value_count(df, Field.JobTitle))
+        print('Unique count of {}'.format(Field.JobTitle))
+        print(get_field_unique_count(df, Field.JobTitle))
 
-    def tokenize(text):
-        tokens = [word for word in nltk.word_tokenize(text) if len(word) > 1]
-        nonstop = [word for word in tokens if word not in sws]
-        stems = [stemmer.stem(item) for item in nonstop]
-        return stems
+    df[Field.JobTitleNormalized] = df[Field.JobTitle].replace(regex=r' [-\(].*$', value='')
 
-    # TODO
+    if log:
+        print('Count by {}'.format(Field.JobTitleNormalized))
+        print(get_field_value_count(df, Field.JobTitleNormalized))
+        print('Unique count of {}'.format(Field.JobTitleNormalized))
+        print(get_field_unique_count(df, Field.JobTitleNormalized))
 
 
 transform()

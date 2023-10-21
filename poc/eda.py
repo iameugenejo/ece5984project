@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
+
+import sys
+from os import path
 import pandas as pd
 from tabulate import tabulate
 
+DIR = sys.path[0]
 FILENAME = 'Uncleaned_DS_jobs.csv.zip'
 
 
 def eda():
-    df = pd.read_csv("/tmp/{}".format(FILENAME))
+    df = pd.read_csv(path.join(DIR, FILENAME))
     desc_less_df = df.drop(columns=['Job Description'])
     print(tabulate(desc_less_df.sample(10, random_state=5984), headers='keys', tablefmt='psql'))
 
@@ -25,6 +29,9 @@ def eda():
     print("Are there duplicate rows?")
     print(df.duplicated())
     print("====================================")
+
+    print("Title Count")
+    print(df.groupby(by=['Job Title'])['Job Title'].count().sort_values())
 
 
 eda()
