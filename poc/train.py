@@ -3,36 +3,32 @@
 import sys
 from os import path
 import pandas as pd
-import nltk
-from nltk.corpus import stopwords
-from nltk.stem.porter import PorterStemmer
-import string
-
+import numpy as np
+from domain import Field, File
+from sklearn import naive_bayes, feature_extraction
+from sklearn import model_selection
 DIR = sys.path[0]
-FILENAME = 'Uncleaned_DS_jobs.csv.zip'
 
 
-stemmer = PorterStemmer()
+def train(cls):
+    print('training {}'.format(cls.__name__))
+    df = pd.read_pickle(path.join(DIR, File.CleanedFileName))  # type: pd.DataFrame
+
+    clf = cls()
+
+    tfidf = feature_extraction.text.TfidfVectorizer()
+    tv = tfidf.fit_transform(df[Field.JobDescriptionTokens])
+
+    scores = model_selection.cross_val_score(clf, tv.toarray(), df[Field.JobTitleNormalized], error_score='raise', scoring='accuracy', n_jobs=-1)
+
+    mean_score, std_score = np.mean(scores), np.std(scores)
+    print(
+        pd.DataFrame([mean_score, std_score], index=['mean accuracy', 'std accuracy'])
+    )
 
 
-def train():
-    df = pd.read_csv(path.join(DIR, FILENAME))
-
-    sws = set(stopwords.words('english'))
-
-    with open('stopwords.txt') as f:  # more english stop words
-        sws |= set([line.strip() for line in f.readlines() if line.strip()])
-
-    sws |= set(string.punctuation)  # remove punctuations
-    sws |= set(string.digits)  # remove digits
-
-    def tokenize(text):
-        tokens = [word for word in nltk.word_tokenize(text) if len(word) > 1]
-        nonstop = [word for word in tokens if word not in sws]
-        stems = [stemmer.stem(item) for item in nonstop]
-        return stems
-
-    # TODO
-
-
-train()
+train(naive_bayes.BernoulliNB)
+train(naive_bayes.ComplementNB)
+train(naive_bayes.GaussianNB)
+train(naive_bayes.CategoricalNB)
+train(naive_bayes.MultinomialNB)

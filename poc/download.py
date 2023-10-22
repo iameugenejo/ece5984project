@@ -2,16 +2,16 @@
 
 import sys
 from kaggle.api.kaggle_api_extended import KaggleApi
+from domain import File
 
 DIR = sys.path[0]
-FILENAME = 'Uncleaned_DS_jobs.csv'
 
 
 def download():
     api = KaggleApi()
     api.authenticate()
 
-    api.dataset_download_file("rashikrahmanpritom/data-science-job-posting-on-glassdoor", FILENAME, DIR, quiet=False)
+    api.dataset_download_file("rashikrahmanpritom/data-science-job-posting-on-glassdoor", File.UncleanedFileName, DIR, quiet=False)
 
 
 download()

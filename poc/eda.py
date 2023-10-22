@@ -4,14 +4,14 @@ import sys
 from os import path
 import pandas as pd
 from tabulate import tabulate
+from domain import Field, File
 
 DIR = sys.path[0]
-FILENAME = 'Uncleaned_DS_jobs.csv.zip'
 
 
 def eda():
-    df = pd.read_csv(path.join(DIR, FILENAME))
-    desc_less_df = df.drop(columns=['Job Description'])
+    df = pd.read_csv(path.join(DIR, File.UncleanedFileName))
+    desc_less_df = df.drop(columns=[Field.JobDescription])
     print(tabulate(desc_less_df.sample(10, random_state=5984), headers='keys', tablefmt='psql'))
 
     print("Basic Dataframe info")
@@ -31,7 +31,7 @@ def eda():
     print("====================================")
 
     print("Title Count")
-    print(df.groupby(by=['Job Title'])['Job Title'].count().sort_values())
+    print(df.groupby(by=[Field.JobTitle])[Field.JobTitle].count().sort_values())
 
 
 eda()
