@@ -7,7 +7,9 @@ from domain import Field, File
 from aggregation import *
 import nltk
 from nltk.corpus import stopwords
-from nltk.stem.porter import PorterStemmer
+from nltk.stem import WordNetLemmatizer
+from nltk.tag import pos_tag
+
 import string
 import pickle
 
@@ -17,8 +19,8 @@ DIR = sys.path[0]
 DIR_wh = 's3://ece5984-bucket-eugenejj/Project'  # TODO confirm the final destination
 DESTINATION = 'local'
 
-
-stemmer = PorterStemmer()
+nltk.download('wordnet')
+lemmatizer = WordNetLemmatizer()
 
 
 def transform():
@@ -110,13 +112,26 @@ def tokenize_job_descriptions(df: pd.DataFrame):
     def tokenize(text):
         tokens = [word.lower() for word in nltk.word_tokenize(text) if len(word) > 1]
         nonstop = [word for word in tokens if word not in sws]
-        stems = [stemmer.stem(item) for item in nonstop]
-        return ' '.join(stems)
+        lemmatized = lemmatize_all(nonstop)
+        return ' '.join(lemmatized)
 
     df[Field.JobDescriptionTokens] = df[Field.JobDescription].transform(tokenize)
 
     print('Tokenized (10):')
     print(df[Field.JobDescriptionTokens][:10])
+
+
+def lemmatize_all(words):
+    wnl = WordNetLemmatizer()
+    for word, tag in pos_tag(words):
+        if tag.startswith("NN"):
+            yield wnl.lemmatize(word, pos='n')
+        elif tag.startswith('VB'):
+            yield wnl.lemmatize(word, pos='v')
+        elif tag.startswith('JJ'):
+            yield wnl.lemmatize(word, pos='a')
+        else:
+            yield word
 
 
 transform()
