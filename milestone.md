@@ -5,6 +5,7 @@
   - https://www.kaggle.com/datasets/rashikrahmanpritom/data-science-job-posting-on-glassdoor
 - [ ] Choose the pipeline
 - [ ] Set-up the pipeline
+- [x] Explore, assess, and transform the data, as needed
 
 ### What pipeline, project, and dataset are you using?
 
@@ -32,7 +33,6 @@ TBD
 TBD
 
 ### What is left to do?
-- [ ] Explore, assess, and transform the data, as needed
 - [ ] Choose your analysis model, as needed
 - [ ] Run the pipeline
 - [ ] Show the results

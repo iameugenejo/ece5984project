@@ -5,7 +5,7 @@ from os import path
 import pandas as pd
 import numpy as np
 from domain import Field, File
-from sklearn import naive_bayes, feature_extraction
+from sklearn import naive_bayes, feature_extraction, neighbors, tree, neural_network, linear_model, svm
 from sklearn import model_selection
 DIR = sys.path[0]
 
@@ -27,6 +27,12 @@ def train(cls):
     )
 
 
+train(svm.SVC)
+train(linear_model.RidgeClassifier)
+train(linear_model.SGDClassifier)
+train(neural_network.MLPClassifier)
+train(tree.DecisionTreeClassifier)
+train(neighbors.KNeighborsClassifier)
 train(naive_bayes.BernoulliNB)
 train(naive_bayes.ComplementNB)
 train(naive_bayes.GaussianNB)
