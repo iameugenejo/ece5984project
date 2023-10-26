@@ -1,10 +1,20 @@
-### What have you done so far?
+# ECE 5984 Project: Glassdoor Job Title Prediction based on the Job Description
+
+## Team members
+Eugene Jung Jo
+Chang Kyu Kim
+
+### What have you done so far? / What is left to do?
 - [x] Define the scope of the project
 - [x] Choose the dataset
   - https://www.kaggle.com/datasets/rashikrahmanpritom/data-science-job-posting-on-glassdoor
-- [ ] Choose the pipeline
+- [x] Choose the pipeline
 - [ ] Set-up the pipeline
 - [x] Explore, assess, and transform the data, as needed
+- [x] Choose your analysis model, as needed
+- [ ] Run the pipeline
+- [ ] Show the results
+- [x] Document the Project
 
 The scope of this project is to create a data pipeline that takes the raw web-scraped job posting data from Glassdoor, and build a text classification model that can predict the job title. This dataset provides several features such as salary range, company name, size, industry and many others, but we are mainly using the job title as the label data and the raw job description as the feature data to build the classifier.
 
@@ -65,9 +75,3 @@ TBD
 
 ### What are your next steps?
 TBD
-
-### What is left to do?
-- [ ] Choose your analysis model, as needed
-- [ ] Run the pipeline
-- [ ] Show the results
-- [ ] Document the Project
