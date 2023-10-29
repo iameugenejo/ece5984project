@@ -46,15 +46,28 @@ We also decided to group the following keywords under senior title for each job 
   - senior
   - sr
   - experienced
-  - ii
-  - iii
   - staff
   - lead
   - principal
 
-After cleaning the job title, the total of 172 unique job titles was reduced down to 71, and the number of job descriptions matching the 9 groups is 583 from the total of 672 (86.7%).
+After cleaning the job title, the total of 172 unique job titles was reduced down to 69, and the number of job descriptions matching the 9 groups is 583 from the total of 672 (86.7%). The following is the statistics about the normalized job titles.
+```
+count                672
+unique                69
+top       data scientist
+freq                 390
+```
 
-TODO: Add section on job description data cleaning
+For the job description, we tokenized the text using `nltk` library's `word_tokenize` method, removed english stopwords and lemmatized the remaining word tokens. On top of the `nltk`'s built-in english stopwords, we used additional stopwords from https://www.ranks.nl/stopwords and https://www.kaggle.com/datasets/rowhitswami/stopwords to increase effectiveness of the categorization.  It generated average of 316.74 tokens. The following is the statistics about the numbers of the tokens per entry. 
+```
+mean   316.744048
+std    146.196395
+min      8.000000
+25%    225.000000
+50%    306.000000
+75%    390.000000
+max    998.000000
+```
 
 ### Will you perform Exploratory Data Analysis? Which methods are you going to use?
 

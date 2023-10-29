@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import os
+import re
 import sys
+import typing
 from os import path
 import pandas as pd
 from domain import Field, File
@@ -9,7 +11,6 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tag import pos_tag
-
 import string
 import pickle
 
@@ -22,6 +23,20 @@ DESTINATION = 'local'
 nltk.download('wordnet')
 lemmatizer = WordNetLemmatizer()
 
+target_job_titles = [
+    'data scientist',
+    'data engineer',
+    'senior data scientist',
+    'machine learning engineer',
+    'machine learning scientist',
+    'data analyst',
+    'data science manager',
+    'senior data analyst',
+    'senior data engineer',
+]
+
+manager_pattern = re.compile(r'(manager|management|director|president|vp)')
+senior_pattern = re.compile(r'(senior|sr|experienced|staff|lead|principal)')
 
 def transform():
     df = pd.read_csv(path.join(DIR, File.UncleanedFileName))
@@ -78,12 +93,38 @@ def normalize_job_titles(df: pd.DataFrame):
     print('Unique count of {}'.format(Field.JobTitle))
     print(get_field_unique_count(df, Field.JobTitle))
 
-    df[Field.JobTitleNormalized] = df[Field.JobTitle].replace(regex=r' [-\(].*$', value='')
+    def match_title(title: str) -> str:
+        if not any(t in title for t in target_job_titles):
+            return title
+
+        if manager_pattern.match(title):
+            return 'data science manager'
+        elif 'machine learning' in title:
+            return 'machine learning engineer'
+        elif senior_pattern.match(title):
+            if 'engineer' in title:
+                return 'senior data engineer'
+            elif 'analyst' in title:
+                return 'senior data analyst'
+            elif 'scientist' in title:
+                return 'senior data scientist'
+        elif 'engineer' in title:
+            return 'data engineer'
+        elif 'analyst' in title:
+            return 'data analyst'
+        elif 'scientist' in title:
+            return 'data scientist'
+        else:
+            return title
+
+    df[Field.JobTitleNormalized] = df[Field.JobTitle].str.lower()
+    df[Field.JobTitleNormalized].replace(regex=r' [-\(].*$', value='', inplace=True)
+    df[Field.JobTitleNormalized] = df[Field.JobTitleNormalized].apply(match_title)
 
     print('Count by {} (10)'.format(Field.JobTitleNormalized))
     print(get_field_value_count(df, Field.JobTitleNormalized)[:10])
-    print('Unique count of {}'.format(Field.JobTitleNormalized))
-    print(get_field_unique_count(df, Field.JobTitleNormalized))
+    print('Statistics of {}'.format(Field.JobTitleNormalized))
+    print(df[Field.JobTitleNormalized].describe())
 
 
 def tokenize_job_descriptions(df: pd.DataFrame):
@@ -109,10 +150,12 @@ def tokenize_job_descriptions(df: pd.DataFrame):
     sws |= set(string.punctuation)  # remove punctuations
     sws |= set(string.digits)  # remove digits
 
+    token_counts = []
     def tokenize(text):
         tokens = [word.lower() for word in nltk.word_tokenize(text) if len(word) > 1]
         nonstop = [word for word in tokens if word not in sws]
         lemmatized = lemmatize_all(nonstop)
+        token_counts.append(len(lemmatized))
         return ' '.join(lemmatized)
 
     df[Field.JobDescriptionTokens] = df[Field.JobDescription].transform(tokenize)
@@ -120,18 +163,24 @@ def tokenize_job_descriptions(df: pd.DataFrame):
     print('Tokenized (10):')
     print(df[Field.JobDescriptionTokens][:10])
 
+    print('Token counts of {}'.format(Field.JobDescriptionTokens))
+    print(pd.DataFrame(token_counts).describe())
 
-def lemmatize_all(words):
+
+def lemmatize_all(words) -> typing.List[str]:
+    lemmatized = []
     wnl = WordNetLemmatizer()
     for word, tag in pos_tag(words):
         if tag.startswith("NN"):
-            yield wnl.lemmatize(word, pos='n')
+            lemmatized.append(wnl.lemmatize(word, pos='n'))
         elif tag.startswith('VB'):
-            yield wnl.lemmatize(word, pos='v')
+            lemmatized.append(wnl.lemmatize(word, pos='v'))
         elif tag.startswith('JJ'):
-            yield wnl.lemmatize(word, pos='a')
+            lemmatized.append(wnl.lemmatize(word, pos='a'))
         else:
-            yield word
+            lemmatized.append(word)
+
+    return lemmatized
 
 
 transform()
