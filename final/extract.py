@@ -2,23 +2,25 @@
 
 import os
 import tempfile
-from kaggle.api.kaggle_api_extended import KaggleApi
 from domain import File, RemoteFile
 from airflow.decorators import task
 from s3fs.core import S3FileSystem
-
+import requests
 
 @task()
 def download_unprocessed():
-    api = KaggleApi()
-    api.authenticate()
     t = tempfile.mktemp(prefix="ece5984_")
 
     print('downloading the file to {}'.format(t))
-    api.dataset_download_file(
-        "rashikrahmanpritom/data-science-job-posting-on-glassdoor", File.UncleanedFileName, t, quiet=False)
+    res = requests.get('https://github.com/iameugenejo/ece5984project/raw/4cc67ea56ad4d5fdb7ce25849a31056edb347ca5/Uncleaned_DS_jobs.csv.zip')
+    res.raise_for_status()
 
-    return os.path.join(t, File.UncleanedFileNameZip)
+    filepath = os.path.join(t, File.UncleanedFileNameZip)
+
+    with open(filepath, 'wb') as f:
+        f.write(res.content)
+
+    return filepath
 
 
 @task()
