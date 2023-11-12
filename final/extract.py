@@ -29,6 +29,10 @@ def extract_and_upload():
     # pick only interested columns
     df = df[[Field.JobTitle, Field.JobDescription]]
 
+    # drop na
+    df[Field.JobTitle].dropna(inplace=True)
+    df[Field.JobDescription].dropna(inplace=True)
+
     s3_file_path = '{}/{}'.format(RemoteFile.DataLakePath, File.UncleanedFileName)
     print('uploading to {}'.format(s3_file_path))
 

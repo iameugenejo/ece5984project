@@ -153,13 +153,6 @@ def tokenize_job_descriptions(df: pd.DataFrame):
     token_counts = []
 
     def tokenize(text) -> str:
-        if text is None:
-            return ''
-
-        if not isinstance(text, str):
-            print('invalid type {}'.format(type(text)))
-            return ''
-
         tokens = [word.lower() for word in nltk.word_tokenize(text) if len(word) > 1]
         nonstop = [word for word in tokens if word not in sws]
         lemmatized = lemmatize_all(nonstop)
