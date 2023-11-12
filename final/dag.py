@@ -37,3 +37,5 @@ def final():
         load.train(s3_file_path_transformed, naive_bayes.MultinomialNB),
     )
 
+final()
+
