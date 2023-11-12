@@ -14,7 +14,7 @@ from sqlalchemy import create_engine
 
 
 @task()
-def train(s3_file_path_transformed: str, cls, ds=None) -> pd.DataFrame:
+def train(*args, s3_file_path_transformed: str = '', cls=None, ds=None, **kwargs) -> pd.DataFrame:
     print('training {}'.format(cls.__name__))
 
     incremental = False
