@@ -5,6 +5,19 @@ import transform
 import load
 from sklearn import naive_bayes, neighbors, tree, neural_network, linear_model, svm
 
+TRAIN_TARGETS = [
+    svm.SVC,
+    linear_model.RidgeClassifier,
+    linear_model.SGDClassifier,
+    neural_network.MLPClassifier,
+    tree.DecisionTreeClassifier,
+    neighbors.KNeighborsClassifier,
+    naive_bayes.BernoulliNB,
+    naive_bayes.ComplementNB,
+    naive_bayes.GaussianNB,
+    naive_bayes.CategoricalNB,
+    naive_bayes.MultinomialNB,
+]
 
 @dag(
     schedule=None,
@@ -22,20 +35,17 @@ def final():
     # upload transformed to s3
     s3_file_path_transformed = transform.upload_transformed(df)
 
+    # construct train tasks
+    train_tasks = []
+    for target_cls in TRAIN_TARGETS:
+        @task(task_id=target_cls.__name__)
+        def train_task():
+            load.train(s3_file_path_transformed, target_cls)
+
+        train_tasks.append(train_task)
+
     # load
-    load.save_result_to_db(
-        task(task_id="train_svc")(load.train)(s3_file_path_transformed=s3_file_path_transformed, model_cls=svm.SVC),
-        task(task_id="train_ridge")(load.train)(s3_file_path_transformed=s3_file_path_transformed, model_cls=linear_model.RidgeClassifier),
-        task(task_id="train_sgd")(load.train)(s3_file_path_transformed=s3_file_path_transformed, model_cls=linear_model.SGDClassifier),
-        task(task_id="train_mlp")(load.train)(s3_file_path_transformed=s3_file_path_transformed, model_cls=neural_network.MLPClassifier),
-        task(task_id="train_decision_tree")(load.train)(s3_file_path_transformed=s3_file_path_transformed, model_cls=tree.DecisionTreeClassifier),
-        task(task_id="train_kn")(load.train)(s3_file_path_transformed=s3_file_path_transformed, model_cls=neighbors.KNeighborsClassifier),
-        task(task_id="train_bernoulli")(load.train)(s3_file_path_transformed=s3_file_path_transformed, model_cls=naive_bayes.BernoulliNB),
-        task(task_id="train_complement")(load.train)(s3_file_path_transformed=s3_file_path_transformed, model_cls=naive_bayes.ComplementNB),
-        task(task_id="train_gaussian")(load.train)(s3_file_path_transformed=s3_file_path_transformed, model_cls=naive_bayes.GaussianNB),
-        task(task_id="train_categorical")(load.train)(s3_file_path_transformed=s3_file_path_transformed, model_cls=naive_bayes.CategoricalNB),
-        task(task_id="train_multinomial")(load.train)(s3_file_path_transformed=s3_file_path_transformed, model_cls=naive_bayes.MultinomialNB),
-    )
+    load.save_result_to_db(*train_tasks)
 
 
 final()
