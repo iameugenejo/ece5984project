@@ -13,7 +13,7 @@ def download_unprocessed():
     t = tempfile.mkdtemp(prefix="ece5984_")
 
     print('downloading the file to {}'.format(t))
-    res = requests.get('https://github.com/iameugenejo/ece5984project/raw/4cc67ea56ad4d5fdb7ce25849a31056edb347ca5/Uncleaned_DS_jobs.csv.zip')
+    res = requests.get(RemoteFile.SourcePath)
     res.raise_for_status()
 
     filepath = os.path.join(t, File.UncleanedFileNameZip)

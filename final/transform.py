@@ -50,6 +50,9 @@ def transform(s3_file_path_unprocessed: str) -> pd.DataFrame:
     # normalize job titles
     normalize_job_titles(df)
 
+    # drop jobs with a single occurrence of job title
+
+
     # tokenize job descriptions
     tokenize_job_descriptions(df)
 
@@ -74,6 +77,17 @@ def upload_transformed(df: pd.DataFrame) -> str:
 
 
 def normalize_job_titles(df: pd.DataFrame):
+
+    df[Field.JobTitleNormalized] = df[Field.JobTitle].str.lower()
+    df[Field.JobTitleNormalized].replace(regex=r' [-\(].*$', value='', inplace=True)
+
+    print('Count by {} (10)'.format(Field.JobTitleNormalized))
+    print(get_field_value_count(df, Field.JobTitleNormalized)[:10])
+    print('Statistics of {}'.format(Field.JobTitleNormalized))
+    print(df[Field.JobTitleNormalized].describe())
+
+
+def normalize_job_titles_big_data(df: pd.DataFrame):
     """
         populates a new field with normalized job title
 
