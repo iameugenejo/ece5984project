@@ -1,4 +1,6 @@
 from datetime import datetime
+
+import pandas as pd
 from airflow.decorators import dag, task
 import extract
 import transform
@@ -39,8 +41,8 @@ def final():
     train_tasks = []
     for target_cls in TRAIN_TARGETS:
         @task(task_id='train_{}'.format(target_cls.__name__))
-        def train_task(s3file_path: str):
-            load.train(s3file_path, target_cls)
+        def train_task(s3file_path: str) -> pd.DataFrame:
+            return load.train(s3file_path, target_cls)
 
         train_tasks.append(train_task(s3_file_path_transformed))
 
