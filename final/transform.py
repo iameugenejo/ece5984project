@@ -168,6 +168,3 @@ def lemmatize_all(words) -> typing.List[str]:
             lemmatized.append(word)
 
     return lemmatized
-
-
-transform()
