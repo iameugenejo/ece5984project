@@ -75,14 +75,14 @@ def save_result_to_db(*dfs):
     engine.execute("CREATE DATABASE IF NOT EXISTS {db}"
                    .format(db=db_db))  # Insert pid here
 
-    # clean up
-    engine.execute("DROP TABLE IF EXISTS class_scores")
-
     engine = create_engine("mysql+pymysql://{user}:{pw}@{endpnt}/{db}"
                            .format(user=db_user,
                                    pw=db_pass,
                                    endpnt=db_url,
                                    db=db_db))
+
+    # clean up
+    engine.execute("DROP TABLE IF EXISTS {db}.class_scores".format(db=db_db))
 
     for ds in dfs:  # type: str
         df = pd.read_json(ds)
