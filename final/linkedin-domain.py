@@ -17,6 +17,6 @@ class File:
 
 
 class RemoteFile:
-    SourcePath = Variable.get('SOURCE_PATH', default_var='https://github.com/iameugenejo/2023-linkedin-job-posting/raw/f4fa4265797ff1d4963cb9bcdb20dd3bd8cbdd97/job_postings.csv.zip')
+    SourcePath = Variable.get('SOURCE_PATH', default_var='https://github.com/iameugenejo/2023-linkedin-job-posting/raw/b75c565df1393c3700c2002be188175109a0bc06/job_postings.csv.zip')
     DataLakePath = Variable.get('DL_PATH', default_var='s3://ece5984-bucket-eugenejj/Project')
     DataWarehousePath = Variable.get('DW_PATH', default_var='s3://ece5984-bucket-eugenejj/Project')
