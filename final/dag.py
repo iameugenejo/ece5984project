@@ -42,7 +42,7 @@ def final():
         def train_task():
             load.train(s3_file_path_transformed, target_cls)
 
-        train_tasks.append(train_task)
+        train_tasks.append(train_task())
 
     # load
     load.save_result_to_db(*train_tasks)
