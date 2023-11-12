@@ -14,8 +14,8 @@ from sqlalchemy import create_engine
 
 
 @task()
-def train(*args, s3_file_path_transformed: str = '', cls=None, ds=None, **kwargs) -> pd.DataFrame:
-    print('training {}'.format(cls.__name__))
+def train(*args, s3_file_path_transformed: str = '', model_cls=None, ds=None, **kwargs) -> pd.DataFrame:
+    print('training {}'.format(model_cls.__name__))
 
     incremental = False
     s3_file_path_trained = '{}/{}'.format(RemoteFile.DataWarehousePath, File.TrainedFileNameFormat.format(cls.__name__))
@@ -25,7 +25,7 @@ def train(*args, s3_file_path_transformed: str = '', cls=None, ds=None, **kwargs
     # new data
     df = pd.read_pickle(s3.open(s3_file_path_transformed))  # type: pd.DataFrame
 
-    clf = cls()
+    clf = model_cls()
     if hasattr(clf, "partial_fit"):
         # load previously trained file from s3 if exists
         if s3.exists(s3_file_path_trained):
