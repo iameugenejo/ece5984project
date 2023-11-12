@@ -20,6 +20,10 @@ DIR = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(sys.path[0])
 
 nltk.download('wordnet')
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+
 lemmatizer = WordNetLemmatizer()
 
 target_job_titles = [
@@ -40,9 +44,6 @@ senior_pattern = re.compile(r'(senior|sr|experienced|staff|lead|principal)')
 
 @task()
 def transform(s3_file_path_unprocessed: str) -> pd.DataFrame:
-    nltk.download('stopwords')
-    nltk.download('punkt')
-
     s3 = S3FileSystem()
     df = pd.read_csv(s3.open(s3_file_path_unprocessed, compression='zip'))
 
@@ -144,6 +145,7 @@ def tokenize_job_descriptions(df: pd.DataFrame):
     sws |= set(string.digits)  # remove digits
 
     token_counts = []
+
     def tokenize(text):
         tokens = [word.lower() for word in nltk.word_tokenize(text) if len(word) > 1]
         nonstop = [word for word in tokens if word not in sws]
