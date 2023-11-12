@@ -19,7 +19,7 @@ def extract_and_upload():
     res = requests.get(RemoteFile.SourcePath)
     res.raise_for_status()
 
-    filepath = os.path.join(t, File.UncleanedFileNameZip)
+    filepath = os.path.join(t, File.RawUncleanedFileName)
 
     with open(filepath, 'wb') as f:
         f.write(res.content)
@@ -29,7 +29,7 @@ def extract_and_upload():
     # pick only interested columns
     df = df[[Field.JobTitle, Field.JobDescription]]
 
-    s3_file_path = '{}/{}'.format(RemoteFile.DataLakePath, File.UncleanedFileNameZip)
+    s3_file_path = '{}/{}'.format(RemoteFile.DataLakePath, File.UncleanedFileName)
     print('uploading to {}'.format(s3_file_path))
 
     s3 = S3FileSystem()

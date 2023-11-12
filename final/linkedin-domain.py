@@ -9,8 +9,8 @@ class Field:
 
 
 class File:
-    UncleanedFileName = 'job_postings.csv'
-    UncleanedFileNameZip = UncleanedFileName + '.zip'
+    RawUncleanedFileName = 'job_postings.csv'
+    UncleanedFileName = RawUncleanedFileName + '.pickle'
     CleanedFileName = 'project-clean.pkl'
     TrainedFileNameFormat = 'project-trained-{}.pkl'
     ResultFileNameFormat = 'project-result-{}.pkl'
