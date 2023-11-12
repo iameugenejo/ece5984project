@@ -158,7 +158,11 @@ def tokenize_job_descriptions(df: pd.DataFrame):
     token_counts = []
 
     def tokenize(text):
-        if text is None:
+        if not text:
+            return ''
+
+        if not isinstance(text, str):
+            print('invalid type {}'.format(type(text)))
             return ''
 
         tokens = [word.lower() for word in nltk.word_tokenize(text) if len(word) > 1]
