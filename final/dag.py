@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import pandas as pd
-from airflow.decorators import dag, task
+from airflow.decorators import dag, task, task_group
 import extract
 import transform
 import load
@@ -37,17 +37,20 @@ def final():
     # upload transformed to s3
     s3_file_path_transformed = transform.upload_transformed(df)
 
-    # construct train tasks
-    train_tasks = []
-    for target_cls in TRAIN_TARGETS:
-        @task(task_id='train_{}'.format(target_cls.__name__))
-        def train_task(s3file_path: str, cls) -> str:
-            return load.train(s3file_path, cls).to_json()
+    @task_group(group_id='train')
+    def train_group():
+        for target_cls in TRAIN_TARGETS:
+            @task(task_id='train_{}'.format(target_cls.__name__))
+            def train_task(s3file_path: str, cls) -> str:
+                return load.train(s3file_path, cls).to_json()
 
-        train_tasks.append(train_task(s3_file_path_transformed, target_cls))
+            train_results.append(train_task(s3_file_path_transformed, target_cls))
 
+        return train_results
+
+    train_results = train_group()
     # load
-    load.save_result_to_db(*train_tasks)
+    load.save_result_to_db(*train_results)
 
 
 final()
