@@ -39,6 +39,8 @@ def final():
 
     @task_group(group_id='train')
     def train_group():
+        train_results = []
+
         for target_cls in TRAIN_TARGETS:
             @task(task_id='train_{}'.format(target_cls.__name__))
             def train_task(s3file_path: str, cls) -> str:
@@ -48,9 +50,8 @@ def final():
 
         return train_results
 
-    train_results = train_group()
     # load
-    load.save_result_to_db(*train_results)
+    load.save_result_to_db(*train_group())
 
 
 final()
