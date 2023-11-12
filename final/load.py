@@ -61,7 +61,7 @@ def save_result_to_db(*dfs):
     db_user = Variable.get("DB_USER", default_var=None)
     db_pass = Variable.get("DB_PASSWORD", default_var=None)
     db_url = Variable.get("DB_URL", default_var="database-dataeng.cwgvgleixj0c.us-east-1.rds.amazonaws.com")
-    db_db = Variable.get("DB_DB", default_var="eugenejj-final")
+    db_db = Variable.get("DB_DB", default_var="eugenejj_final")
 
     assert not not db_user, "DB_USER variable must be set"
     assert not not db_pass, "DB_PASSWORD variable must be set"
