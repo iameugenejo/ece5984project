@@ -27,10 +27,8 @@ TRAIN_TARGETS = [
     catchup=False,
 )
 def final():
-    # extract
-    temp_file = extract.download_unprocessed()
-    # upload extracted to s3
-    s3_file_path_unprocessed = extract.upload_unprocessed(temp_file)
+    # extract and upload to s3
+    s3_file_path_unprocessed = extract.extract_and_upload()
 
     # transform
     df = transform.transform(s3_file_path_unprocessed)

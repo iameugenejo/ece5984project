@@ -6,10 +6,13 @@ from domain import File, RemoteFile
 from airflow.decorators import task
 from s3fs.core import S3FileSystem
 import requests
+import pandas as pd
+from domain import Field, RemoteFile
+import pickle
 
 
 @task()
-def download_unprocessed():
+def extract_and_upload():
     t = tempfile.mkdtemp(prefix="ece5984_")
 
     print('downloading the file to {}'.format(t))
@@ -21,17 +24,16 @@ def download_unprocessed():
     with open(filepath, 'wb') as f:
         f.write(res.content)
 
-    return filepath
+    df = pd.read_csv(filepath, compression='zip')
 
+    # pick only interested columns
+    df = df[[Field.JobTitle, Field.JobDescription]]
 
-@task()
-def upload_unprocessed(file_path: str) -> str:
     s3_file_path = '{}/{}'.format(RemoteFile.DataLakePath, File.UncleanedFileNameZip)
-    print('uploading {} to {}'.format(file_path, s3_file_path))
+    print('uploading to {}'.format(s3_file_path))
 
     s3 = S3FileSystem()
-    with open(file_path, mode='rb') as f:
-        with s3.open(s3_file_path, 'wb') as rf:
-            rf.write(f.read())
+    with s3.open(s3_file_path, 'wb') as f:
+        f.write(pickle.dumps(df))
 
     return s3_file_path
