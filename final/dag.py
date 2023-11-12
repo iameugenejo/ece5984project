@@ -41,10 +41,10 @@ def final():
     train_tasks = []
     for target_cls in TRAIN_TARGETS:
         @task(task_id='train_{}'.format(target_cls.__name__))
-        def train_task(s3file_path: str) -> str:
-            return load.train(s3file_path, target_cls).to_json()
+        def train_task(s3file_path: str, cls) -> str:
+            return load.train(s3file_path, cls).to_json()
 
-        train_tasks.append(train_task(s3_file_path_transformed))
+        train_tasks.append(train_task(s3_file_path_transformed, target_cls))
 
     # load
     load.save_result_to_db(*train_tasks)
