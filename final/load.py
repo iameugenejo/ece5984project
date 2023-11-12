@@ -61,7 +61,7 @@ def save_result_to_db(*dfs):
     db_user = Variable.get("DB_USER", default_var=None)
     db_pass = Variable.get("DB_PASSWORD", default_var=None)
     db_url = Variable.get("DB_URL", default_var="database-dataeng.cwgvgleixj0c.us-east-1.rds.amazonaws.com")
-    db_db = Variable.get("DB_DB", default_var="eugenejj")
+    db_db = Variable.get("DB_DB", default_var="eugenejj-final")
 
     assert not not db_user, "DB_USER variable must be set"
     assert not not db_pass, "DB_PASSWORD variable must be set"
@@ -72,7 +72,7 @@ def save_result_to_db(*dfs):
                                    pw=db_pass,
                                    endpnt=db_url))
 
-    engine.execute("CREATE DATABASE {db}"
+    engine.execute("CREATE DATABASE IF NOT EXISTS {db}"
                    .format(db=db_db))  # Insert pid here
 
     engine = create_engine("mysql+pymysql://{user}:{pw}@{endpnt}/{db}"
