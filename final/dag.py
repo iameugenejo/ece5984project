@@ -1,5 +1,5 @@
 from datetime import datetime
-from airflow.decorators import dag
+from airflow.decorators import dag, task
 import extract
 import transform
 import load
@@ -24,17 +24,17 @@ def final():
 
     # load
     load.save_result_to_db(
-        load.train(s3_file_path_transformed, svm.SVC),
-        load.train(s3_file_path_transformed, linear_model.RidgeClassifier),
-        load.train(s3_file_path_transformed, linear_model.SGDClassifier),
-        load.train(s3_file_path_transformed, neural_network.MLPClassifier),
-        load.train(s3_file_path_transformed, tree.DecisionTreeClassifier),
-        load.train(s3_file_path_transformed, neighbors.KNeighborsClassifier),
-        load.train(s3_file_path_transformed, naive_bayes.BernoulliNB),
-        load.train(s3_file_path_transformed, naive_bayes.ComplementNB),
-        load.train(s3_file_path_transformed, naive_bayes.GaussianNB),
-        load.train(s3_file_path_transformed, naive_bayes.CategoricalNB),
-        load.train(s3_file_path_transformed, naive_bayes.MultinomialNB),
+        task(task_id="train_svc")(load.train)(s3_file_path_transformed, svm.SVC),
+        task(task_id="train_ridge")(load.train)(s3_file_path_transformed, linear_model.RidgeClassifier),
+        task(task_id="train_sgd")(load.train)(s3_file_path_transformed, linear_model.SGDClassifier),
+        task(task_id="train_mlp")(load.train)(s3_file_path_transformed, neural_network.MLPClassifier),
+        task(task_id="train_decision_tree")(load.train)(s3_file_path_transformed, tree.DecisionTreeClassifier),
+        task(task_id="train_kn")(load.train)(s3_file_path_transformed, neighbors.KNeighborsClassifier),
+        task(task_id="train_bernoulli")(load.train)(s3_file_path_transformed, naive_bayes.BernoulliNB),
+        task(task_id="train_complement")(load.train)(s3_file_path_transformed, naive_bayes.ComplementNB),
+        task(task_id="train_gaussian")(load.train)(s3_file_path_transformed, naive_bayes.GaussianNB),
+        task(task_id="train_categorical")(load.train)(s3_file_path_transformed, naive_bayes.CategoricalNB),
+        task(task_id="train_multinomial")(load.train)(s3_file_path_transformed, naive_bayes.MultinomialNB),
     )
 
 final()
