@@ -47,6 +47,9 @@ def transform(s3_file_path_unprocessed: str) -> pd.DataFrame:
     s3 = S3FileSystem()
     df = pd.read_csv(s3.open(s3_file_path_unprocessed, compression='zip'))
 
+    # pick only interested columns
+    df = df[[Field.JobTitle, Field.JobDescription]]
+
     # normalize job titles
     normalize_job_titles(df)
 
