@@ -43,7 +43,7 @@ def train(s3_file_path_transformed: str, cls, ds=None, **kwargs) -> pd.DataFrame
 
     mean_score, std_score = np.mean(scores), np.std(scores)
 
-    result = pd.DataFrame([ds, cls.__name__, mean_score, std_score], index=['date', 'class', 'mean accuracy', 'std accuracy'])
+    result = pd.DataFrame([ds, cls.__name__, mean_score, std_score], columns=['date', 'class', 'mean accuracy', 'std accuracy'])
     print(result)
 
     # fit model
@@ -75,6 +75,9 @@ def save_result_to_db(*dfs):
     engine.execute("CREATE DATABASE IF NOT EXISTS {db}"
                    .format(db=db_db))  # Insert pid here
 
+    # clean up
+    engine.execute("DROP TABLE IF EXISTS class_scores")
+
     engine = create_engine("mysql+pymysql://{user}:{pw}@{endpnt}/{db}"
                            .format(user=db_user,
                                    pw=db_pass,
@@ -83,4 +86,4 @@ def save_result_to_db(*dfs):
 
     for ds in dfs:  # type: str
         df = pd.read_json(ds)
-        df.to_sql('class_scores', con=engine, index=False, if_exists='replace', chunksize=1000)
+        df.to_sql('class_scores', con=engine, index=False, if_exists='append', chunksize=1000)
