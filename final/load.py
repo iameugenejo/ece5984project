@@ -43,7 +43,7 @@ def train(s3_file_path_transformed: str, cls, ds=None, **kwargs) -> pd.DataFrame
 
     mean_score, std_score = np.mean(scores), np.std(scores)
 
-    result = pd.DataFrame([ds, cls.__name__, mean_score, std_score], columns=['date', 'class', 'mean accuracy', 'std accuracy'])
+    result = pd.DataFrame([ds, cls.__name__, mean_score, std_score], index=['date', 'class', 'mean accuracy', 'std accuracy']).transpose()
     print(result)
 
     # fit model
