@@ -38,7 +38,7 @@ senior_pattern = re.compile(r'(senior|sr|experienced|staff|lead|principal)')
 @task()
 def transform(s3_file_path_unprocessed: str) -> pd.DataFrame:
     s3 = S3FileSystem()
-    df = pd.read_csv(s3.open(s3_file_path_unprocessed))
+    df = pd.read_csv(s3.open(s3_file_path_unprocessed, compression='zip'))
 
     # normalize job titles
     normalize_job_titles(df)
