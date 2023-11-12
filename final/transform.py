@@ -13,6 +13,9 @@ import string
 import pickle
 from airflow.decorators import task
 from s3fs.core import S3FileSystem
+import os
+
+DIR = os.path.dirname(os.path.realpath(__file__))
 
 sys.path.append(sys.path[0])
 
@@ -129,11 +132,11 @@ def tokenize_job_descriptions(df: pd.DataFrame):
 
     sws = set(stopwords.words('english'))
     # merge stopwords from https://www.ranks.nl/stopwords
-    with open('stopwords-rank.nl.txt') as f:
+    with open(os.path.join(DIR, 'stopwords-rank.nl.txt')) as f:
         sws |= set([line.strip().lower() for line in f.readlines() if line.strip()])
 
     # merge stopwords from https://www.kaggle.com/datasets/rowhitswami/stopwords
-    with open('stopwords-rowhitswami.txt') as f:
+    with open(os.path.join(DIR, 'stopwords-rowhitswami.txt')) as f:
         sws |= set([line.strip().lower() for line in f.readlines() if line.strip()])
 
     sws |= set(string.punctuation)  # remove punctuations
