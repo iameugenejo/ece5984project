@@ -83,4 +83,4 @@ def save_result_to_db(*dfs):
 
     for ds in dfs:  # type: str
         df = pd.read_json(ds)
-        df.to_sql('class_scores', con=engine, if_exists='append', chunksize=1000)
+        df.to_sql('class_scores', con=engine, index=False, if_exists='replace', chunksize=1000)
