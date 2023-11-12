@@ -8,6 +8,7 @@ from sklearn import feature_extraction
 from sklearn import model_selection
 from sklearn import metrics
 from airflow.decorators import task
+from airflow.models import Variable
 from s3fs.core import S3FileSystem
 import pickle
 from sqlalchemy import create_engine
@@ -57,10 +58,13 @@ def train(s3_file_path_transformed: str, cls, ds=None, **kwargs) -> pd.DataFrame
 
 @task()
 def save_result_to_db(*dfs):
-    db_user = os.environ.get("DB_USER", "")
-    db_pass = os.environ.get("DB_PASSWORD", "")
-    db_url = os.environ.get("DB_URL", "")
-    db_db = os.environ.get("DB_DB", "eugenejj")
+    db_user = Variable.get("DB_USER", default_var=None)
+    db_pass = Variable.get("DB_PASSWORD", default_var=None)
+    db_url = Variable.get("DB_URL", default_var="database-dataeng.cwgvgleixj0c.us-east-1.rds.amazonaws.com")
+    db_db = Variable.get("DB_DB", default_var="eugenejj")
+
+    assert not not db_user, "DB_USER variable must be set"
+    assert not not db_pass, "DB_PASSWORD variable must be set"
 
     # create sqlalchemy engine
     engine = create_engine("mysql+pymysql://{user}:{pw}@{endpnt}"
