@@ -10,7 +10,7 @@ class Field:
 
 class File:
     RawUncleanedFileName = 'job_postings.csv'
-    UncleanedFileName = RawUncleanedFileName + '.pickle'
+    UncleanedFileName = RawUncleanedFileName + '.pkl'
     CleanedFileName = 'project-clean.pkl'
     TrainedFileNameFormat = 'project-trained-{}.pkl'
     ResultFileNameFormat = 'project-result-{}.pkl'
