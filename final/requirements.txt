@@ -9,3 +9,4 @@ apache-airflow==2.7.3
 numpy~=1.24.0
 SQLAlchemy~=1.4.50
 requests~=2.31.0
+pyarrow==14.0.1
