@@ -38,7 +38,7 @@ def final():
     # construct train tasks
     train_tasks = []
     for target_cls in TRAIN_TARGETS:
-        @task(task_id=target_cls.__name__)
+        @task(task_id='train_{}'.format(target_cls.__name__))
         def train_task(s3file_path: str):
             load.train(s3file_path, target_cls)
 
