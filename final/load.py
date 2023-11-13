@@ -53,6 +53,13 @@ def train(s3_file_path_transformed: str, cls, ds=None, **kwargs) -> pd.DataFrame
     with s3.open(s3_file_path_trained, 'wb') as f:
         f.write(pickle.dumps(clf))
 
+    # record the final model size from S3
+    du_info = s3.du(s3_file_path_trained)
+    print(f'final model disk usage: {du_info}')
+
+    # add the disk size to the db output
+    result['disk usage'] = du_info
+
     return result
 
 
