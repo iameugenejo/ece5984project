@@ -33,7 +33,7 @@ airflow standalone
     * `DB_USER`: database user
     * `DB_DB`: database name 
     * `SOURCE_PATH`: raw data source path (must be a public HTTP link to a zip file)
-    * `DL_PATH`: datalake path (must be an accessible s3 path)
+    * `DL_PATH`: data lake path (must be an accessible s3 path)
     * `DW_PATH`: data warehouse path (must be an accessible s3 path)
     * `TITLE_COLUMN`: title column name
     * `DESCRIPTION_COLUMN`: description column name
