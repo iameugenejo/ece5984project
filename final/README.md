@@ -5,6 +5,8 @@ by Chang Kyu Kim and Eugene Jung Jo
 
 * Clone and symlink the project final folder in the airflow directory then launch the Airflow server
 ```shell
+apt-get install -y git
+
 cd /tmp
 
 git clone https://github.com/iameugenejo/ece5984project.git
