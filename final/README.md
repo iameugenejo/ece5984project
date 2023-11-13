@@ -4,7 +4,7 @@ by Chang Kyu Kim and Eugene Jung Jo
 ## Setup
 
 * Clone and symlink the project final folder in the airflow directory then launch the Airflow server
-```bash
+```shell
 cd /tmp
 
 git clone https://github.com/iameugenejo/ece5984project.git
@@ -35,3 +35,11 @@ airflow standalone
     * `DW_PATH`: data warehouse path (must be an accessible s3 path)
     * `TITLE_COLUMN`: title column name
     * `DESCRIPTION_COLUMN`: description column name
+
+![airflow variable screenshot](airflow.variable.screenshot.png)
+
+## Airflow tasks
+![airflow screenshot](airflow.screenshot.png)
+
+## Tableau
+![tableau screenshot](tableau.screenshot.png)
