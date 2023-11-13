@@ -3,7 +3,7 @@ by Chang Kyu Kim and Eugene Jung Jo
 
 ## Setup
 
-* Clone and symlink the project final folder in the airflow directory and launch the Airflow server
+* Clone and symlink the project final folder in the airflow directory then launch the Airflow server
 ```bash
 cd /tmp
 
@@ -15,7 +15,7 @@ cd ~/airflow
 mv dags dags_backup
 
 # symlink the project folder
-ln -sf /tmp/ece5894project dags
+ln -sf /tmp/ece5894project/final dags
 
 # install requirements
 pip install -r dags/requirements.txt
@@ -26,7 +26,7 @@ airflow standalone
 * Setup Airflow Variables
   * Required:
     * `DB_PASSWORD`: database password
-  * Optional
+  * Optional:
     * `DB_URL`: database url
     * `DB_USER`: database user
     * `DB_DB`: database name 
