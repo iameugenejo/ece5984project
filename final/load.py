@@ -65,9 +65,9 @@ def train(s3_file_path_transformed: str, cls, ds=None, **kwargs) -> pd.DataFrame
 
 @task()
 def save_result_to_db(*dfs):
-    db_user = Variable.get("DB_USER", default_var='admin')
+    db_user = Variable.get("DB_USER", default_var='user')
     db_pass = Variable.get("DB_PASSWORD", default_var=None)
-    db_url = Variable.get("DB_URL", default_var="database-eng2.cwgvgleixj0c.us-east-1.rds.amazonaws.com")
+    db_url = Variable.get("DB_URL", default_var="localhost:3306")
     db_db = Variable.get("DB_DB", default_var="eugenejj_final")
 
     assert not not db_user, "DB_USER variable must be set"

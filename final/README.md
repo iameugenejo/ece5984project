@@ -5,7 +5,22 @@ by Chang Kyu Kim and Eugene Jung Jo
 
 * Clone and symlink the project final folder in the airflow directory then launch the Airflow server
 ```shell
-apt-get install -y git
+# run the VM with -p 53306-54306:3306
+# e.g.) docker run --rm -it --entrypoint bash -v /home/ubuntu/efs-mount-point/students/eugenejj/root:/root -p 8080-8131:8080 -p 9092-9143:9092 -p 53306-54306:3306 --name eugenejj pipeline:latest
+
+apt-get update && apt-get install -y git mysql-server
+
+nano /etc/mysql/mysql.conf.d/mysqld.cnf
+# update bind-address = 127.0.0.1 to bind-address = 0.0.0.0
+
+service mysql start
+
+mysql
+
+# mysql> CREATE USER 'user'@'%' IDENTIFIED BY '{{ INSERT PASSWORD }}';
+# mysql> GRANT ALL PRIVILEGES ON *.* TO 'user'@'%' WITH GRANT OPTION;
+# mysql> FLUSH PRIVILEGES;
+# mysql> exit
 
 cd /tmp
 
