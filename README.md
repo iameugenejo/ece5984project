@@ -2,10 +2,15 @@
 should describe (no more that 3-4 lines for the following topics)
 
 **Title**: What is the title of your project?
+ML Model Performance Comparison for Glassdoor Job Title Prediction Text Classifier
 
 **Project’s function**: This is an overall description of your project: What is objective of the project? What is the problem you are trying to solve?
 
+In this project, we wanted to create a robust data pipeline that takes the raw web-scraped job posting data from Glassdoor, build several text classification models that can predict the job title based on the job description, and finally compare the model mean scores and accuracy. We chose this project as we are interested in Natural Language Processing and working with the real world unclean data to develop a good classification model is a useful pattern that can be applied in many other use cases.
+
 **Dataset**: Briefly describe your dataset
+
+We are using the [Data Science Job Posting on Glassdoor](https://www.kaggle.com/datasets/rashikrahmanpritom/data-science-job-posting-on-glassdoor) dataset that is available from Kaggle. The author scrapped the data science related job postings from glassdoor's website about three years ago. The author provides a raw and cleaned version of the data and we are using the raw version. This dataset provides several features such as salary range, company name, size, industry and many others, but we are mainly using the job title as the label data and the raw job description as the feature data to build the classifiers. 
 
 **Pipeline / Architecture**: Which pipeline did you use? Which tools?
 
