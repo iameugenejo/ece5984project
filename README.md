@@ -14,11 +14,17 @@ We are using the [Data Science Job Posting on Glassdoor](https://www.kaggle.com/
 
 **Pipeline / Architecture**: Which pipeline did you use? Which tools?
 
+We chose the batch data ingestion and ML model training pipeline for this project. Since we are not dealing with a streaming data source, a batch data ingestion was suitable for our project. The pipeline downloads the raw data from Kaggle, cleaning and preprocessing the job title and job description field, and training 11 different ML models and recording the classifier performance. 
+
+We used Airflow to orchestrate the end-to-end data pipeline from data ingestion to training the ML model. For feature engineering, we used Pandas library to convert the raw data into a dataframe and apply the data cleaning and transformation. Finally for the models training, we used scikit-learn library to experiment different Naive Bayes models and generated the trained model as a python pickle files.
+
 **Data Quality Assessment**: Describe the quality status of the data set and the way you assessed it
 
 **Data Transformation Models used**: Briefly describe the transformations and models used and final results that you were able to achieve. If there are any special instructions needed to execute your code (e.g., signing up to a specific API to access the dataset that is needed) those need to be listed as well.
 
 **Infographic**: A simple infographic describing the architecture of your data pipeline including datasets, storage, and tools used along with another final infographic describing the results of the engineering task accomplished. Examples can be provided if needed.
+
+![Project Architecture](Project_Architecture.svg)
 
 **Code**: A link to GitHub Repository
 
