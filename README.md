@@ -42,6 +42,6 @@ We used Airflow to orchestrate the end-to-end data pipeline from data ingestion 
 ![Tableau Chart](final/tableau.screenshot.png)
 
 
-**Code**: A link to GitHub Repository
+**Code**: https://github.com/iameugenejo/ece5984project/tree/main/final
 
 **Thorough Investigation**: This critically assesses the viability of your idea: Based on the results of this project (your pilot project, your prototype, etc), from a technical leadership point of view, what are your conclusions or recommendations for continuing this project in terms of scaling it up? How would you assess the innovativeness of your project? Any technical or platform concerns, difficulties, or limitations of the pipeline for the project? Based on your experience and results, what next step would you recommend to take this project to the next level/phase?
