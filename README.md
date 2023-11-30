@@ -5,6 +5,10 @@
 # ML Model Performance Comparison for Glassdoor Job Title Prediction Text Classifier
 ---
 
+## Team members
+- Eugene Jung Jo 
+- Chang Kyu Kim
+
 <!--  **Project’s function**: This is an overall description of your project: What is objective of the project? What is the problem you are trying to solve? -->
 
 # Description
@@ -28,9 +32,28 @@ We chose the batch data ingestion and ML model training pipeline for this projec
 
 We used Airflow to orchestrate the end-to-end data pipeline from data ingestion to training the ML model. For feature engineering, we used Pandas library to convert the raw data into a dataframe and apply the data cleaning and transformation. Finally for the models training, we used scikit-learn library to experiment different Naive Bayes models and generated the trained model as a python pickle files.
 
-**Data Quality Assessment**: Describe the quality status of the data set and the way you assessed it
+<!-- **Data Quality Assessment**: Describe the quality status of the data set and the way you assessed it -->
+## Data Quality Assessment
 
-**Data Transformation Models used**: Briefly describe the transformations and models used and final results that you were able to achieve. If there are any special instructions needed to execute your code (e.g., signing up to a specific API to access the dataset that is needed) those need to be listed as well.
+Instead of using the author's cleaned data, We have taken the raw data and converted it into a Pandas DataFrame for EDA. We have looked for the data anomaly such as duplicate, missing data, and inspected the job title and job description data. We did not need to explore the other numerical features such as salary or the categorical data like industry and company name as our project is focused on job title and description. 
+
+We believe this data is trustworthy as we can validate the entries by looking up the company names to make sure it is an actual company and comparing with the web archive of the job posting data if it is available. The data is also likely authentic and we can validate by comparing the data with the web archive version.
+
+<!-- **Data Transformation Models used**: Briefly describe the transformations and models used and final results that you were able to achieve. If there are any special instructions needed to execute your code (e.g., signing up to a specific API to access the dataset that is needed) those need to be listed as well. -->
+
+## Data Transformation and Models Used
+
+For data preprocessing and tranformation, we mainly focused on the NLP text normalization over the job title and job description. We mainly used the following techniques:
+
+- Case Normalization
+- Punctuation Removal
+- Stop Words Removal
+- Lemmatization
+- Grouping the job titles to specific categories
+
+We have trained a total of 11 text classification ML models using the same dataset and compared the model performance. Assuming that these models would be served by some sort of a web service, we also compared the trained model's pickled data size. 
+
+As for reproducing the pipeline and the final output, we have created a separate ![README](final/README.md) file detailing the steps.
 
 <!--  **Infographic**: A simple infographic describing the architecture of your data pipeline including datasets, storage, and tools used along with another final infographic describing the results of the engineering task accomplished. Examples can be provided if needed. -->
 
