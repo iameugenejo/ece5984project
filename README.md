@@ -67,7 +67,7 @@ As for reproducing the pipeline and the final output, we have created a separate
 
 **Thorough Investigation**:  <!-- This critically assesses the viability of your idea: Based on the results of this project (your pilot project, your prototype, etc), from a technical leadership point of view, what are your conclusions or recommendations for continuing this project in terms of scaling it up? How would you assess the innovativeness of your project? Any technical or platform concerns, difficulties, or limitations of the pipeline for the project? Based on your experience and results, what next step would you recommend to take this project to the next level/phase? -->
 
-The idea of the project is to build a system that continuously improve the classification models by periodically feeding the data to them as long as the models support partial-fitting. 
+The idea of the project is to build a system that continuously improves the classification models by periodically feeding the data to them as long as the models support partial-fitting. 
 
 The next phase of the project would be to ensure that the data fed to the model that resulted in lower accuracy are discarded.
 
